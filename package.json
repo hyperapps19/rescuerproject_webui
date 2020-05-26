@@ -1,0 +1,25 @@
+{
+  "name": "rescuerproject_webui",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-dev": "webpack --mode=development",
+    "build-prod": "webpack --mode=production",
+    "run": "dist/index.html"
+  },
+  "dependencies": {
+    "@turf/turf": "^5.1.6",
+    "socket.io-client": "^2.3.0",
+    "mapbox-gl": "^1.10.0",
+    "@mapbox/mapbox-gl-language": "^0.10.1",
+    "typeface-roboto": "^0.0.75"
+  },
+  "devDependencies": {
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "style-loader": "^1.2.1",
+    "css-loader": "^3.5.3",
+    "file-loader": "^6.0.0"
+  }
+}

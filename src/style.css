@@ -1,0 +1,44 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+#header {
+    position: absolute;
+    top: 0;
+    height: 5vh;
+}
+#map {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 93vh;
+}
+
+#header {
+    width: 100%;
+}
+
+#header > * {
+    height: 100%;
+    width: auto;
+    display: block;
+    margin-block-start: 0;
+    margin-block-end: 0;
+    margin-inline-start: 0;
+    margin-inline-end: 0;
+    position: relative;
+    top: 0;
+
+    user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+#logo {
+
+}
+.mapboxgl-ctrl-logo {
+    display: none !important;
+}
