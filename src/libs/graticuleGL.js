@@ -1,20 +1,24 @@
 'use strict';
-
+import * as turf from "@turf/turf";
 // copied from
 // https://github.com/turban/Leaflet.Graticule/blob/master/L.Graticule.js
 
-function graticule(interval, corner1, corner2) {
-
+function graticule(intervalKm, corner1, corner2) {
     if (corner1[0] > corner2[0]) [corner1[0], corner2[0]] = [corner2[0], corner1[0]]
     if (corner1[1] > corner2[1]) [corner1[1], corner2[1]] = [corner2[1], corner1[1]]
 
-    //interval = +interval || 20;
+    const from = turf.point(corner1);
+    const to1 = turf.point([corner1[0], corner2[1]]);
+    const to2 = turf.point([corner2[0], corner1[1]]);
+    const interval1 = (corner2[0] - corner1[0]) / (turf.distance(from, to1) / intervalKm);
+    const interval2 = (corner2[1] - corner1[1]) / (turf.distance(from, to2) / intervalKm);
+
     const features = [];
 
-    for (let lng = corner1[0]; lng <= corner2[0]; lng += interval)
+    for (let lng = corner1[0]; lng <= corner2[0]; lng += interval1)
         features.push(makeFeature(makeMeridian(lng, corner1[1], corner2[1])));
 
-    for (let lat = corner1[1]; lat <= corner2[1]; lat += interval)
+    for (let lat = corner1[1]; lat <= corner2[1]; lat += (interval2 /2))
         features.push(makeFeature(makeParallel(lat, corner1[0], corner2[0])));
 
     return {

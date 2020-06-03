@@ -1,12 +1,16 @@
-import './style.css';
+import './style.scss';
 import io from 'socket.io-client';
 import mapboxgl from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css'
 import MapboxLanguage from "@mapbox/mapbox-gl-language";
 import * as turf from '@turf/turf';
 import graticule from "./libs/graticuleGL";
+import yellowFlag_image from '../res/yellow_flag.svg';
+import blackBall_image from '../res/black_ball.png';
+import alarm_sound from '../res/alarm_sound.mp3'
+import 'typeface-roboto'
 
-
-const alarmSound = new Audio("res/alarm_sound.mp3")
+const alarmSound = new Audio(alarm_sound)
 let map;
 const socket = io('http://localhost:8090');
 socket.on('config', displayMap);
@@ -43,7 +47,12 @@ function changeMarkerPlace(c) {
 
 function alarm(c) {
     alarmSound.play()
-    console.log(c)
+    const mkr = devices.get(c['deviceId']);
+    setInterval(() => {
+        if (mkr.getElement().style.visibility === "hidden")
+            mkr.getElement().style.visibility = ""
+        else mkr.getElement().style.visibility = "hidden"
+    }, 300)
 }
 
 function processData(data) {
@@ -54,11 +63,11 @@ function processData(data) {
 let isSwimmingAllowed = true;
 const btn = document.getElementById("btnChangeIsSwimmingAllowed");
 
-function changeIsSwimmingAllowed() {
+window.changeIsSwimmingAllowed = () => {
     isSwimmingAllowed = !isSwimmingAllowed;
     let img;
-    if (isSwimmingAllowed) img = 'res/yellow_flag.svg'
-    else img = 'res/black_ball.png'
+    if (isSwimmingAllowed) img = yellowFlag_image
+    else img = blackBall_image
     btn.setAttribute('src', img)
     socket.emit('isSwimmingAllowedChangeEvent', isSwimmingAllowed)
 }
@@ -68,6 +77,7 @@ function addGraticuleToMap(graticuleInterval, bearing) {
     const bounds = map.getBounds()
     const c1 = [bounds._ne.lng + 0.1, bounds._ne.lat + 0.1]
     const c2 = [bounds._sw.lng - 0.1, bounds._sw.lat - 0.1]
+
     const data = turf.transformRotate(graticule(graticuleInterval, c1, c2), bearing)
     map.addSource('graticule', {
         'type': 'geojson',
@@ -116,5 +126,4 @@ function displayMap(data) {
         .addTo(map);
     fnCreateGraticule = addGraticuleToMap.bind(null, data['graticuleInterval'], data['bearing']);
     map.on('load', fnCreateGraticule);
-
 }

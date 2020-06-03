@@ -1,3 +1,7 @@
+@import "~typeface-roboto/index.css";
+h1 {
+    font-family: 'Roboto', sans-serif;
+}
 body {
     margin: 0;
     padding: 0;
@@ -35,9 +39,6 @@ body {
     -webkit-user-drag: none;
     -webkit-user-select: none;
     -ms-user-select: none;
-}
-#logo {
-
 }
 .mapboxgl-ctrl-logo {
     display: none !important;
